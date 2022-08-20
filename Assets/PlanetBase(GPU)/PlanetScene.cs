@@ -14,11 +14,11 @@ public class PlanetScene : MonoBehaviour {
     public Texture2D Velocity;
 
     FluidSimulation FluidSimulation;
-   
+
     // Use this for initialization
     void Start () {
 
-        FluidSimulation= new FluidSimulation();
+        FluidSimulation = new FluidSimulation();
         FluidSimulation.ComputeShader = ComputeShader;
 
         FluidSimulation.setResolution(Resolution);
@@ -35,14 +35,14 @@ public class PlanetScene : MonoBehaviour {
 
         }
 
-        PlanetMaterial.SetVectorArray("_AOKernel",aoKernel);
+        PlanetMaterial.SetVectorArray("_AOKernel", aoKernel);
 
 
     }
 
     // Update is called once per frame
     void Update () {
-    
+
         FluidSimulation.SimStep(Time.deltaTime);
 
         // Not sure if this is really necessary

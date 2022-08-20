@@ -1,0 +1,15 @@
+﻿#pragma kernel GenerateSpherizedTemplate
+
+#include "Assets/SphereShader/SphereInclude.cginc"
+
+int Width;
+int Height;
+
+RWTexture2D<float4> Result;
+
+[numthreads(8,8,1)]
+void GenerateSpherizedTemplate (uint3 id : SV_DispatchThreadID) {
+    uint2 writeCoordinate = SpherizedPixel(id.xy, Width, Height);
+
+    Result[writeCoordinate] = float4((float)writeCoordinate.x / Width, (float)writeCoordinate.y / Height, 0.5f, 1.0f);
+}

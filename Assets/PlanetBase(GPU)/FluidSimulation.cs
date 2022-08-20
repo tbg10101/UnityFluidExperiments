@@ -21,7 +21,7 @@ public class FluidSimulation {
     // Compute Shader Section
     public ComputeShader ComputeShader;
 
-    // The Ids of the indviual subprograms of the compute shader 
+    // The Ids of the indviual subprograms of the compute shader
     static class Kernels {
 
         public const int Advect = 0;
@@ -39,9 +39,6 @@ public class FluidSimulation {
     int ResolutionX { get { return ThreadCountX * 8; } }
     int ResolutionY { get { return ThreadCountY * 8; } }
 
-    public FluidSimulation() { }
-    ~FluidSimulation() {}
-
     // Vector field buffers
     // This is where the simulation data is stored
     public static RenderTexture V_IN;
@@ -54,7 +51,7 @@ public class FluidSimulation {
     public static RenderTexture Div;
 
     // Color buffers (for double buffering)
-    // Visual images are saved here 
+    // Visual images are saved here
     // We use double buffering because the caculation is (probably) synchron and we want to avoid flickering
     public RenderTexture _colorRT1;
     public RenderTexture _colorRT2;
@@ -146,7 +143,7 @@ public class FluidSimulation {
         // Add Velocity
         if (Input.GetKey(KeyCode.P)) {
 
-            ComputeShader.SetTexture(Kernels.AddForce, "Map_In", dyeTexture);
+            ComputeShader.SetTexture(Kernels.AddForce, "Map_In", velocityTexture);
             ComputeShader.SetTexture(Kernels.AddForce, "V4Field_out", V_IN);
             ComputeShader.SetTexture(Kernels.AddForce, "V4Field_in", V_IN);
             ComputeShader.Dispatch(Kernels.AddForce, ThreadCountX, ThreadCountY, 1);
@@ -156,7 +153,7 @@ public class FluidSimulation {
         // Add Dye
         if (Input.GetKey(KeyCode.L)) {
 
-            ComputeShader.SetTexture(Kernels.AddDye, "Map_In", velocityTexture);
+            ComputeShader.SetTexture(Kernels.AddDye, "Map_In", dyeTexture);
             ComputeShader.SetTexture(Kernels.AddDye, "V4Field_in", D_IN);
             ComputeShader.SetTexture(Kernels.AddDye, "V4Field_out", D_IN);
             ComputeShader.Dispatch(Kernels.AddDye, ThreadCountX, ThreadCountY, 1);
@@ -216,7 +213,7 @@ public class FluidSimulation {
             ComputeShader.SetTexture(Kernels.Project2, "V4Field_out", V_IN);
             ComputeShader.Dispatch(Kernels.Project2, ThreadCountX, ThreadCountY, 1);
 
-      
+
 
             // DYE
             Graphics.CopyTexture(D_IN, TEMP);
@@ -253,7 +250,7 @@ public class FluidSimulation {
         swapBuffers(ref _velRT2, ref _velRT1);
 
 
-    
+
 
     }
 

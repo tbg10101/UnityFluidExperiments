@@ -1,0 +1,33 @@
+﻿#pragma kernel CursorPaint
+#pragma kernel GenerateSpherizedTemplate
+#pragma kernel SimulateFluid
+
+#include "Assets/SphereShader/SphereInclude.cginc"
+
+bool CursorOver;
+bool CursorClicked;
+
+float4 CursorColor;
+float4 CursorPosition;
+
+int Width;
+int Height;
+
+Texture2D<float4> Source;
+RWTexture2D<float4> Result;
+RWTexture2D<float4> PersistedResult;
+
+[numthreads(8,8,1)]
+void CursorPaint (uint3 id : SV_DispatchThreadID) {
+    PersistedResult[id.xy] = Source[id.xy];
+
+    if (CursorClicked && ((int)id.x == CursorPosition.x) && ((int)id.y == CursorPosition.y)) {
+        PersistedResult[id.xy] = CursorColor;
+    }
+
+    Result[id.xy] = PersistedResult[id.xy];
+
+    if (CursorOver && ((int)id.x == CursorPosition.x) && ((int)id.y == CursorPosition.y)) {
+        Result[id.xy] = CursorColor;
+    }
+}

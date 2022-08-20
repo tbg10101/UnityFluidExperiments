@@ -1,0 +1,23 @@
+﻿#pragma kernel CSMain
+
+float4 Dimensions;
+
+float DeltaTime;
+
+float Speed;
+
+Texture2D<float4> Source;
+RWTexture2D<float4> Result;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float2 sourceCoord = id.xy;
+    sourceCoord.x = (sourceCoord.x + Speed * DeltaTime);
+
+    if (sourceCoord.x >= Dimensions.x) {
+        sourceCoord.x = sourceCoord.x - Dimensions.x;
+    }
+
+    Result[id.xy] = Source[sourceCoord];
+}
